@@ -20,7 +20,7 @@ from nltk.stem import PorterStemmer
 from nltk.classify import NaiveBayesClassifier
 from nltk.sentiment import SentimentAnalyzer
 from nltk.sentiment.util import extract_unigram_feats
-import newsGetter
+import rss_feeds
 #import wallStreetBetsScraper
 
 
@@ -92,8 +92,8 @@ if __name__ == '__main__':
     # Perform sentiment analysis on headlines from the Wall Street Journal
     url = 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml'
 
-    feed_library = newsGetter.FeedLibrary()
-    feed_library.add_feed(newsGetter.RSSFeed(url, tags=['news', 'markets']))
+    feed_library = rss_feeds.FeedLibrary()
+    feed_library.add_feed(rss_feeds.RSSFeed(url, tags=['news', 'markets']))
     parsed_feed = feed_library.parse_all_feeds(fields=['title', 'description'])[0]['entries']
     headlines = [headline["title"] for headline in parsed_feed]
 
