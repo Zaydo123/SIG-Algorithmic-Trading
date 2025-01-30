@@ -91,23 +91,25 @@ def sentiment_analysis(text):
 if __name__ == '__main__':
     # Perform sentiment analysis on headlines from the Wall Street Journal
     url = 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml'
-    feed = newsGetter.parse_rss_feed(url)
-    headlines = newsGetter.get_headlines(feed)
-    headlines_with_descriptions = newsGetter.get_headlines_with_descriptions(feed)
+
+    feed_library = newsGetter.FeedLibrary()
+    feed_library.add_feed(newsGetter.RSSFeed(url, tags=['news', 'markets']))
+    parsed_feed = feed_library.parse_all_feeds(fields=['title', 'description'])[0]['entries']
+    headlines = [headline["title"] for headline in parsed_feed]
 
     print("Headlines:")
     positive_count = 0
     negative_count = 0
 
     for headline in headlines:
-        print(headline)
+        print("\n--------\n"+headline)
         sentiment = sentiment_analysis(headline)
         print(sentiment)
         if (sentiment == 'Positive'):
             positive_count += 1
         elif (sentiment == 'Negative'):
             negative_count += 1
-        print("\n")
+    print("\n--------\n")
     print("Positive Count:", positive_count)
     print("Negative Count:", negative_count)
     print("Total Headlines:", len(headlines))
